@@ -1,0 +1,83 @@
+{
+  "id": "Dataflow-Product-1",
+  "name": "Product Master Data",
+  "description": "Product Master Data",
+  "active": true,
+  "scheduled": false,
+  "immediateResponse": true,
+  "inboundAdapters": [
+    {
+      "id": "Inbound-Adapter-Product-1",
+      "subtype": "HTTPPUSH",
+      "config": {
+        "attributes": [
+          {
+            "name": "PRDID",
+            "type": "string"
+          },
+          {
+            "name": "UOMID",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "outboundAdapters": [
+    {
+      "id": "Outbound-Adapter-Product-1",
+      "subtype": "KAFKA",
+      "systemConfig": "System-UUID-KAFKA-OutboundAdapter",
+      "config": {
+        "storeData": "Never",
+        "rootScenarioID": 1,
+        "header": {
+          "entity": "Product"
+        }
+      }
+    }
+  ],
+  "parameters": [],
+  "transformationAdapters": [
+    {
+      "id": "Transformation-Product-1",
+      "dataflowId": "Dataflow-Product-1",
+      "priority": 1,
+      "rootEntity": "Inbound-Adapter-Product-1",
+      "entityOperations": [],
+      "filterOperations": [],
+      "attributeOperations": [
+        {
+          "operationId": "operation-1",
+          "type": "Fixed",
+          "attribute": "Group",
+          "config": {
+            "type": "Fixed",
+            "value": ""
+          }
+        },
+        {
+          "operationId": "operation-2",
+          "type": "IDMapping",
+          "attribute": "ProductId",
+          "config": {
+            "type": "IDMapping",
+            "idMappingType": "APC",
+            "config": {
+              "idType": "ProductId",
+              "externalIDPRDID": "PRDID",
+              "adapterID": "Inbound-Adapter-IDMapping-GenerateID",
+              "connection": ""
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "createdBy": "RPRO",
+    "updatedBy": "RPRO",
+    "createdAt": "2023-03-21T13:00:00Z",
+    "updatedAt": "2023-03-21T13:00:00Z"
+  }
+}
