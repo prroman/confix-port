@@ -1,0 +1,789 @@
+openapi: 3.0.2
+info:
+  title: HS4 - Production Confirmation API - ZBC7121_PRODUCTION_CONFIRM_SRV
+  description: "Description will be here . . . \r\n\r\n Prerequisites to sumbit POST request: \r\n\r\na) username and password for basic auth\r\n\r\nb) x-csrf-token should be fetched from $metadata endpoint. Now its undefined if this is necessary \r\n\r\nc) another prerequisite"
+  version: 1.0.0
+servers:
+  - url: https://toydemo.hicron.com:8001/sap/opu/odata/sap/ZBC7121_PRODUCTION_CONFIRM_SRV
+tags:
+  - name: Medatata
+  - name: Monthly Production Confirmation
+  - name: Purchase Order By Production Confirmation
+paths:
+  /$metadata:
+    get:
+      summary: Get metadata & x-csrf token
+      description: Get the metadata of the API service. Fetch x-csrf-token from response header to use it during POST requests
+      tags:
+        - Medatata
+      parameters:
+        - name: x-csrf-token
+          in: header
+          required: false
+          description: Sales Order
+          schema:
+            type: string
+            maxLength: 10
+            example: Fetch
+      responses:
+        "200":
+          description: OK
+          content:
+            application/xml:
+              example:
+          headers:
+            x-csrf-token:
+              schema:
+                type: string
+                description: test
+            xTotalPages:
+              schema:
+                type: integer
+                description: test
+  /MonthlyProductionConfirmation:
+    post:
+      parameters:
+      - name: x-csrf-token
+        in: header
+        required: false
+        description: Sales Order
+        schema:
+          type: string
+          maxLength: 10
+          example: BlL_K7fH8J28YsW4GCkxwA==
+      summary: Add new entity to MonthlyProductionConfirmation
+      tags:
+        - Monthly Production Confirmation
+      requestBody:
+        description: New entity
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZBC7121_PRODUCTION_CONFIRM_SRV.MonthlyProductionConfirmationType'
+      responses:
+        '201':
+          description: Created entity
+          content:
+            application/json:
+              schema:
+                type: object
+                title: MonthlyProductionConfirmationType
+                properties:
+                  d:
+                    $ref: '#/components/schemas/ZBC7121_PRODUCTION_CONFIRM_SRV.MonthlyProductionConfirmationType-response'
+        4XX:
+          $ref: '#/components/responses/error'
+  /PurchaseOrderByProdConf:
+    post:
+      parameters:
+      - name: x-csrf-token
+        in: header
+        required: false
+        description: Sales Order
+        schema:
+          type: string
+          maxLength: 10
+          example: BlL_K7fH8J28YsW4GCkxwA==
+      summary: Add new entity to PurchaseOrderByProdConf
+      tags:
+        - Purchase Order By Production Confirmation
+      requestBody:
+        description: New entity
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZBC7121_PRODUCTION_CONFIRM_SRV.PurchaseOrderByProdConfType'
+      responses:
+        '201':
+          description: Created entity
+          content:
+            application/json:
+              schema:
+                type: object
+                title: PurchaseOrderByProdConfType
+                properties:
+                  d:
+                    $ref: '#/components/schemas/ZBC7121_PRODUCTION_CONFIRM_SRV.PurchaseOrderByProdConfType'
+        4XX:
+          $ref: '#/components/responses/error'
+  /$batch:
+    post:
+      summary: Send a group of requests
+      description: |-
+        Group multiple requests into a single request payload, see [Batch Processing (OData Version 2.0)](https://www.odata.org/documentation/odata-version-2-0/batch-processing/).
+
+        *Please note that "Try it out" is not supported for this request.*
+      tags:
+        - Batch Requests
+      parameters:
+        - name: x-csrf-token
+          in: header
+          required: false
+          description: Sales Order
+          schema:
+            type: string
+            maxLength: 10
+            example: BlL_K7fH8J28YsW4GCkxwA==
+      requestBody:
+        required: true
+        description: Batch request
+        content:
+          multipart/mixed;boundary=request-separator:
+            schema:
+              type: string
+            example: |-
+              --request-separator
+              Content-Type: application/http
+              Content-Transfer-Encoding: binary
+
+              GET MonthlyProductionConfirmation HTTP/1.1
+              Accept: application/json
+
+
+              --request-separator--
+      responses:
+        '202':
+          description: Batch response
+          content:
+            multipart/mixed:
+              schema:
+                type: string
+              example: |-
+                --response-separator
+                Content-Type: application/http
+
+                HTTP/1.1 200 OK
+                Content-Type: application/json
+
+                {...}
+                --response-separator--
+        4XX:
+          $ref: '#/components/responses/error'
+components:
+  schemas:
+    ZBC7121_PRODUCTION_CONFIRM_SRV.MonthlyProductionConfirmationType:
+      title: Monthly Production Confirmation Type
+      type: object
+      required:
+        - LayoutID
+        - DataID
+        - URN
+      properties:
+        LayoutID:
+          type: string
+          maxLength: 4
+          title: Layout ID
+          description: Layout ID
+        DataID:
+          type: string
+          maxLength: 3
+          title: Data ID
+          description: Data ID
+        URN:
+          type: string
+          maxLength: 10
+          title: URN
+          description: URN
+        Distributor:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Distributor
+          description: Distributor
+        DistributorCode:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Dist Code
+          description: Dist Code
+        EDNumber:
+          type: string
+          nullable: true
+          maxLength: 6
+          title: ED Number
+          description: ED Number
+        ColourDigit:
+          type: string
+          nullable: true
+          maxLength: 1
+          title: Colour Digit
+          description: Colour Digit
+        KatashikiCode:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Katashiki
+          description: Katashiki
+        KatashikiCodeFull:
+          type: string
+          nullable: true
+          maxLength: 20
+          title: Full Katashiki
+          description: Full Katashiki
+        SFXCode:
+          type: string
+          nullable: true
+          maxLength: 2
+          title: Suffix
+          description: Suffix
+        PackingType:
+          type: string
+          nullable: true
+          maxLength: 1
+          title: Packing type
+          description: Packing type
+        ColourCodeExt:
+          type: string
+          nullable: true
+          maxLength: 4
+          title: Colour Ext
+          description: Colour Ext
+        TrimCode:
+          type: string
+          nullable: true
+          maxLength: 2
+          title: Trim code
+          description: Trim code
+        ColourInt:
+          type: string
+          nullable: true
+          maxLength: 2
+          title: Colour Int
+          description: Colour Int
+        SpecByte260:
+          type: string
+          nullable: true
+          maxLength: 260
+          title: Spec Byte
+          description: Spec Byte
+        PlantCode:
+          type: string
+          nullable: true
+          maxLength: 1
+          title: Plant code
+          description: Plant code
+        ProductionMonth:
+          type: string
+          nullable: true
+          maxLength: 6
+          title: Production month
+          description: Production month
+        ProductionWeek:
+          type: string
+          nullable: true
+          maxLength: 6
+          title: Production week
+          description: Production week
+        LineOffDate:
+          type: string
+          nullable: true
+          example: /Date(1492098664000)/
+          title: Lineoff date
+          description: Lineoff date
+        DestinationCode:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Destination code
+          description: Destination code
+        DischargePort:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Discharge port
+          description: Discharge port
+        DistributorOrderNumber:
+          type: string
+          nullable: true
+          maxLength: 12
+          title: Distr. Order No
+          description: Distr. Order No
+        LastChangeDate:
+          type: string
+          nullable: true
+          example: /Date(1492098664000)/
+          title: Last Chg Date
+          description: Last Chg Date
+        TmeFiller126:
+          type: string
+          nullable: true
+          maxLength: 126
+          title: TME Filler
+          description: TME Filler
+    ZBC7121_PRODUCTION_CONFIRM_SRV.MonthlyProductionConfirmationType-response:
+      title: Monthly Production Confirmation Type - Response
+      type: object
+      required:
+        - LayoutID
+        - DataID
+        - URN
+      properties:
+        LayoutID:
+          type: string
+          maxLength: 4
+          title: Layout ID
+          description: Layout ID
+          example: ""
+        VehicleUUID:
+          type: string
+          nullable: true
+          format: uuid
+          example: 01234567-89ab-cdef-0123-456789abcdef
+          title: Vehicle GUID
+          description: Vehicle GUID
+        DataID:
+          type: string
+          maxLength: 3
+          title: Data ID
+          description: Data ID
+          example: ""
+        URN:
+          type: string
+          maxLength: 10
+          title: URN
+          description: URN
+          example: J137515856
+        Distributor:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Distributor
+          description: Distributor
+          example: ""
+        DistributorCode:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Dist Code
+          description: Dist Code
+          example: ""
+        EDNumber:
+          type: string
+          nullable: true
+          maxLength: 6
+          title: ED Number
+          description: ED Number
+          example: ""
+        ColourDigit:
+          type: string
+          nullable: true
+          maxLength: 1
+          title: Colour Digit
+          description: Colour Digit
+          example: ""
+        KatashikiCode:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Katashiki
+          description: Katashiki
+          example: ""
+        KatashikiCodeFull:
+          type: string
+          nullable: true
+          maxLength: 20
+          title: Full Katashiki
+          description: Full Katashiki
+          example: ""
+        SFXCode:
+          type: string
+          nullable: true
+          maxLength: 2
+          title: Suffix
+          description: Suffix
+          example: ""
+        PackingType:
+          type: string
+          nullable: true
+          maxLength: 1
+          title: Packing type
+          description: Packing type
+          example: ""
+        ColourCodeExt:
+          type: string
+          nullable: true
+          maxLength: 4
+          title: Colour Ext
+          description: Colour Ext
+          example: ""
+        TrimCode:
+          type: string
+          nullable: true
+          maxLength: 2
+          title: Trim code
+          description: Trim code
+          example: ""
+        ColourInt:
+          type: string
+          nullable: true
+          maxLength: 2
+          title: Colour Int
+          description: Colour Int
+          example: ""
+        SpecByte260:
+          type: string
+          nullable: true
+          maxLength: 260
+          title: Spec Byte
+          description: Spec Byte
+          example: ""
+        PlantCode:
+          type: string
+          nullable: true
+          maxLength: 1
+          title: Plant code
+          description: Plant code
+          example: ""
+        ProductionMonth:
+          type: string
+          nullable: true
+          maxLength: 6
+          title: Production month
+          description: Production month
+          example: ""
+        ProductionWeek:
+          type: string
+          nullable: true
+          maxLength: 6
+          title: Production week
+          description: Production week
+          example: ""
+        LineOffDate:
+          type: string
+          nullable: true
+          example: ""
+          title: Lineoff date
+          description: Lineoff date
+        DestinationCode:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Destination code
+          description: Destination code
+          example: ""
+        DischargePort:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Discharge port
+          description: Discharge port
+          example: ""
+        DistributorOrderNumber:
+          type: string
+          nullable: true
+          maxLength: 12
+          title: Distr. Order No
+          description: Distr. Order No
+          example: ""
+        LastChangeDate:
+          type: string
+          nullable: true
+          example: ""
+          title: Last Chg Date
+          description: Last Chg Date
+        TmeFiller126:
+          type: string
+          nullable: true
+          maxLength: 126
+          title: TME Filler
+          description: TME Filler
+          example: ""
+    ZBC7121_PRODUCTION_CONFIRM_SRV.MonthlyProductionConfirmationType-real-example:
+      title: Monthly Production Confirmation Type - Example Data
+      type: object
+      required:
+        - LayoutID
+        - DataID
+        - URN
+      properties:
+        LayoutID:
+          type: string
+          maxLength: 4
+          title: Layout ID
+          description: Layout ID
+          example: SB01
+        DataID:
+          type: string
+          maxLength: 3
+          title: Data ID
+          description: Data ID
+          example: MPC
+        URN:
+          type: string
+          maxLength: 10
+          title: URN
+          description: URN
+          example: J137515856
+        Distributor:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Distributor
+          description: Distributor
+          example: 9405B
+        DistributorCode:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Dist Code
+          description: Dist Code
+          example: 9405B
+        EDNumber:
+          type: string
+          nullable: true
+          maxLength: 6
+          title: ED Number
+          description: ED Number
+          example: 3V5782
+        ColourDigit:
+          type: string
+          nullable: true
+          maxLength: 1
+          title: Colour Digit
+          description: Colour Digit
+          example: 0
+        KatashikiCode:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Katashiki
+          description: Katashiki
+          example: 59621
+        KatashikiCodeFull:
+          type: string
+          nullable: true
+          maxLength: 20
+          title: Full Katashiki
+          description: Full Katashiki
+          example: KGB70L-AHXKKW
+        SFXCode:
+          type: string
+          nullable: true
+          maxLength: 2
+          title: Suffix
+          description: Suffix
+          example: 6R
+        PackingType:
+          type: string
+          nullable: true
+          maxLength: 1
+          title: Packing type
+          description: Packing type
+          example: 1
+        ColourCodeExt:
+          type: string
+          nullable: true
+          maxLength: 4
+          title: Colour Ext
+          description: Colour Ext
+          example: 2NR
+        TrimCode:
+          type: string
+          nullable: true
+          maxLength: 2
+          title: Trim code
+          description: Trim code
+          example: FC
+        ColourInt:
+          type: string
+          nullable: true
+          maxLength: 2
+          title: Colour Int
+          description: Colour Int
+          example: 00
+        SpecByte260:
+          type: string
+          nullable: true
+          maxLength: 260
+          title: Spec Byte
+          description: Spec Byte
+          example: 0G  A EI  GBI I  B PBB IC  CCICNLICCBBBB BII  DC C BDE E   NY    DGIC  B   B BB D     IB       IIMCIE   IC ICBBGIDGB            B   I       B     I            B    C        B                     J                                                              
+        PlantCode:
+          type: string
+          nullable: true
+          maxLength: 1
+          title: Plant code
+          description: Plant code
+          example: N
+        ProductionMonth:
+          type: string
+          nullable: true
+          maxLength: 6
+          title: Production month
+          description: Production month
+          example: 202307
+        ProductionWeek:
+          type: string
+          nullable: true
+          maxLength: 6
+          title: Production week
+          description: Production week
+          example: ""
+        LineOffDate:
+          type: string
+          nullable: true
+          example: 20230718T00:00:00
+          title: Lineoff date
+          description: Lineoff date
+        DestinationCode:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Destination code
+          description: Destination code
+          example: 9405B
+        DischargePort:
+          type: string
+          nullable: true
+          maxLength: 5
+          title: Discharge port
+          description: Discharge port
+          example: 44ZBR
+        DistributorOrderNumber:
+          type: string
+          nullable: true
+          maxLength: 12
+          title: Distr. Order No
+          description: Distr. Order No
+          example: C423073G0014
+        LastChangeDate:
+          type: string
+          nullable: true
+          example: 20230710T00:00:00
+          title: Last Chg Date
+          description: Last Chg Date
+        TmeFiller126:
+          type: string
+          nullable: true
+          maxLength: 126
+          title: TME Filler
+          description: TME Filler
+          example: ""
+    ZBC7121_PRODUCTION_CONFIRM_SRV.PurchaseOrderByProdConfType:
+      title: Purchase Order By Production Confirmation Type
+      type: object
+      required:
+        - PlantCode
+      properties:
+        PlantCode:
+          type: string
+          maxLength: 1
+          title: Plant code
+          description: Plant code
+        to_Item:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZBC7121_PRODUCTION_CONFIRM_SRV.PurchaseOrderItemByProdConfType'
+    ZBC7121_PRODUCTION_CONFIRM_SRV.PurchaseOrderByProdConfType-example-real:
+      title: Purchase Order By Production Confirmation Type - Example Data
+      type: object
+      required:
+        - PlantCode
+      properties:
+        PlantCode:
+          type: string
+          maxLength: 1
+          title: Plant code
+          description: Plant code
+          example: 1
+        to_Item:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZBC7121_PRODUCTION_CONFIRM_SRV.PurchaseOrderItemByProdConfType-example-real'
+    ZBC7121_PRODUCTION_CONFIRM_SRV.PurchaseOrderItemByProdConfType:
+      title: Purchase Order Item By Production Confirmation Type
+      type: object
+      required:
+        - PlantCode
+        - VehicleUUID
+      properties:
+        PlantCode:
+          type: string
+          maxLength: 1
+          title: Plant code
+          description: Plant code
+        VehicleUUID:
+          type: string
+          format: uuid
+          example: 01234567-89ab-cdef-0123-456789abcdef
+          title: Vehicle GUID
+          description: Vehicle GUID
+    ZBC7121_PRODUCTION_CONFIRM_SRV.PurchaseOrderItemByProdConfType-example-real:
+      title: Purchase Order Item By Production Confirmation Type - Example Data
+      type: object
+      required:
+        - PlantCode
+        - VehicleUUID
+      properties:
+        PlantCode:
+          type: string
+          maxLength: 1
+          title: Plant code
+          description: Plant code
+          example: 1
+        VehicleUUID:
+          type: string
+          format: uuid
+          example: 01234567-89ab-cdef-0123-456789abcdef
+          title: Vehicle GUID
+          description: Vehicle GUID
+    error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+            message:
+              type: object
+              properties:
+                lang:
+                  type: string
+                value:
+                  type: string
+              required:
+                - lang
+                - value
+            innererror:
+              type: object
+              description: The structure of this object is service-specific
+  parameters:
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items, see [URI Conventions (OData Version 2.0)](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/)
+      schema:
+        type: integer
+        minimum: 0
+      example: 50
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items, see [URI Conventions (OData Version 2.0)](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/)
+      schema:
+        type: integer
+        minimum: 0
+    count:
+      name: $inlinecount
+      in: query
+      description: Include count of items, see [URI Conventions (OData Version 2.0)](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/)
+      schema:
+        type: string
+        enum:
+          - allpages
+          - none
+  responses:
+    error:
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
